@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 
 
 export type Club = {
@@ -7,6 +8,7 @@ export type Club = {
 };
 
 export type Event = {
+  description: ReactNode;
   id: string;
   clubId: string;
   name: string;

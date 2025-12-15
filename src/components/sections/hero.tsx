@@ -3,26 +3,15 @@
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { ArrowDown } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 
 export function Hero() {
   const heroImage = PlaceHolderImages.find((img) => img.id === "hero-background");
   const logoImage = PlaceHolderImages.find((img) => img.id === "sponsor-aurora");
-  
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: {},
     visible: {
-      opacity: 1,
       transition: {
         staggerChildren: 0.3,
         delayChildren: 0.2,
@@ -31,27 +20,24 @@ export function Hero() {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } },
+    hidden: { y: 20 },
+    visible: { y: 0, transition: { type: "spring", stiffness: 100 } },
   };
 
   return (
-    <section id="hero" ref={heroRef} className="relative w-full h-[100vh]">
-       <motion.div
-            className="absolute inset-0 -z-10"
-            style={{ y: parallaxY, opacity }}
-          >
-      {heroImage && (
-        <Image
-          src={heroImage.imageUrl}
-          alt={heroImage.description}
-          fill
-          className="object-cover"
-          priority
-          data-ai-hint={heroImage.imageHint}
-        />
-      )}
-      </motion.div>
+    <section id="hero" className="relative w-full h-[100vh]">
+      <div className="absolute inset-0 -z-10">
+        {heroImage && (
+          <Image
+            src={heroImage.imageUrl}
+            alt={heroImage.description}
+            fill
+            className="object-cover"
+            priority
+            data-ai-hint={heroImage.imageHint}
+          />
+        )}
+      </div>
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
       <motion.div 
         className="container relative flex h-full flex-col items-center justify-center text-center p-4"

@@ -7,21 +7,22 @@ export const clubs: Club[] = [
 ];
 
 export const venues: Venue[] = [
-    { id: "academic-block", name: "Academic Block" },
-    { id: "science-block", name: "Science Block" },
-    { id: "library", name: "Library" },
-    { id: "auditorium", name: "Auditorium" },
-    { id: "sports-complex", name: "Sports Complex" },
-    { id: "student-center", name: "Student Center" },
-    { id: "dining-hall", name: "Dining Hall" },
-    { id: "boys-hostel", name: "Boys Hostel" },
-    { id: "girls-hostel", name: "Girls Hostel" },
-    { id: "medical-center", name: "Medical Center" },
-    { id: "parking", name: "Parking" },
+  { id: "academic-block", name: "Academic Block" },
+  { id: "science-block", name: "Science Block" },
+  { id: "library", name: "Library" },
+  { id: "auditorium", name: "Auditorium" },
+  { id: "sports-complex", name: "Sports Complex" },
+  { id: "student-center", name: "Student Center" },
+  { id: "dining-hall", name: "Dining Hall" },
+  { id: "boys-hostel", name: "Boys Hostel" },
+  { id: "girls-hostel", name: "Girls Hostel" },
+  { id: "medical-center", name: "Medical Center" },
+  { id: "parking", name: "Parking" },
 ];
 
 export const events: Event[] = [
   {
+    description: "Start your day with high-energy beats and a fitness rave that gets your heart pumping.",
     id: "evt-001",
     clubId: "club-1",
     name: "Sunrise Beats",
@@ -34,6 +35,7 @@ export const events: Event[] = [
     imageId: "event-music",
   },
   {
+    description: "Experience the campus transformed by light and shadow in this immersive night walk.",
     id: "evt-002",
     clubId: "club-2",
     name: "Luminous Art Walk",
@@ -46,6 +48,7 @@ export const events: Event[] = [
     imageId: "event-art",
   },
   {
+    description: "Taste the world with our international food festival featuring cuisines from over 20 countries.",
     id: "evt-003",
     clubId: "club-3",
     name: "Global Food Village",
@@ -57,7 +60,8 @@ export const events: Event[] = [
     participants: 250,
     imageId: "event-food",
   },
-   {
+  {
+    description: "Immerse yourself in a night of electronic soundscapes and visual projections.",
     id: "evt-004",
     clubId: "club-1",
     name: "Electronic Dreams",
@@ -70,6 +74,7 @@ export const events: Event[] = [
     imageId: "gallery-4",
   },
   {
+    description: "Watch talented artists bring walls to life in real-time with vibrant spray paint and brushes.",
     id: "evt-005",
     clubId: "club-2",
     name: "Live Mural Painting",
@@ -82,6 +87,7 @@ export const events: Event[] = [
     imageId: "gallery-6"
   },
   {
+    description: "Sample the finest local brews and learn from the masters of the craft beer industry.",
     id: "evt-006",
     clubId: "club-3",
     name: "Craft Beer Tasting",
@@ -93,7 +99,8 @@ export const events: Event[] = [
     participants: 75,
     imageId: "event-food-2"
   },
-   {
+  {
+    description: "Chill vibes and acoustic tunes as the sun goes down, perfect for unwinding.",
     id: "evt-007",
     clubId: "club-1",
     name: "Acoustic Sunset",
@@ -105,7 +112,8 @@ export const events: Event[] = [
     participants: 150,
     imageId: "gallery-5"
   },
-   {
+  {
+    description: "Touch, play, and interact with large-scale kinetic installations scattered across the garden.",
     id: "evt-008",
     clubId: "club-2",
     name: "Interactive Sculpture Garden",
@@ -150,15 +158,15 @@ export const sponsors: SponsorTier = {
 };
 
 export const team: TeamMember[] = [
-  { 
+  {
     id: "tm-001",
     name: "Alex Rivera",
     title: "Festival Director",
     bio: "Visionary leader passionate about creating unforgettable experiences.",
     imageId: "team-1",
-    social: { twitter: "#", linkedin: "#" } 
+    social: { twitter: "#", linkedin: "#" }
   },
-  { 
+  {
     id: "tm-002",
     name: "Samira Khan",
     title: "Artistic Director",
