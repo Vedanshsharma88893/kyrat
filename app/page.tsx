@@ -160,9 +160,7 @@ export default function Home() {
             </div>
 
 
-            <div id="festival-moments">
-              <FestivalMoments onImageClick={handleImageClick} />
-            </div>
+            <FestivalMoments onImageClick={handleImageClick} />
 
             <Suspense fallback={<Skeleton className="h-96 w-full" />}>
               <FocusScroll id="sponsors">
