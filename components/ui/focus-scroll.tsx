@@ -7,9 +7,10 @@ import { cn } from "@/lib/utils";
 interface FocusScrollProps {
     children: React.ReactNode;
     className?: string;
+    id?: string;
 }
 
-export function FocusScroll({ children, className }: FocusScrollProps) {
+export function FocusScroll({ children, className, id }: FocusScrollProps) {
     const ref = useRef<HTMLDivElement>(null);
 
     // Track the element's position relative to the viewport
@@ -35,6 +36,7 @@ export function FocusScroll({ children, className }: FocusScrollProps) {
 
     return (
         <motion.div
+            id={id}
             ref={ref}
             style={{
                 scale,

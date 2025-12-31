@@ -11,11 +11,13 @@ import {
 import { Calendar, Clock, MapPin, Users } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { LiquidGlassButton } from "../ui/liquid-glass-button";
 import { motion } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 50 },
-  visible: { 
+  visible: {
     opacity: 1,
     y: 0,
     transition: { duration: 0.6, ease: "easeOut" }
@@ -28,6 +30,7 @@ const cardVariants = {
 };
 
 export function Events() {
+  const { toast } = useToast();
   const getImage = (imageId: string) => {
     return PlaceHolderImages.find((img) => img.id === imageId);
   };
@@ -43,8 +46,8 @@ export function Events() {
   };
 
   return (
-    <motion.section 
-      id="events" 
+    <motion.section
+      id="events"
       className="w-full py-16 md:py-24 lg:py-32"
       variants={sectionVariants}
       initial="hidden"
@@ -62,7 +65,7 @@ export function Events() {
             </p>
           </div>
         </div>
-        <motion.div 
+        <motion.div
           className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:max-w-none lg:grid-cols-3 mt-12"
           variants={containerVariants}
           initial="hidden"
@@ -85,8 +88,8 @@ export function Events() {
                         data-ai-hint={image.imageHint}
                       />
                     )}
-                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                     <Badge
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    <Badge
                       variant={event.status === "Ongoing" ? "destructive" : "secondary"}
                       className="absolute top-3 right-3"
                     >
@@ -104,11 +107,11 @@ export function Events() {
                         <Clock className="w-4 h-4 text-accent" />
                         <span>{event.startTime} - {event.endTime}</span>
                       </div>
-                       <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2">
                         <MapPin className="w-4 h-4 text-accent" />
                         <span>{event.venue}</span>
                       </div>
-                       <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2">
                         <Users className="w-4 h-4 text-accent" />
                         <span>{event.participants} Participants</span>
                       </div>
@@ -119,11 +122,22 @@ export function Events() {
             );
           })}
         </motion.div>
-         <div className="mt-16 text-center">
-            <Button asChild size="lg">
-              <Link href="/events">View All Events</Link>
-            </Button>
-          </div>
+        <div className="mt-16 text-center">
+          <LiquidGlassButton
+            href="/events"
+            disabled
+            onClick={(e) => {
+              e.preventDefault();
+              toast({
+                title: "Coming Soon!",
+                description: "All events will be released soon after events are finalised.",
+                variant: "destructive",
+              });
+            }}
+          >
+            View All Events
+          </LiquidGlassButton>
+        </div>
       </div>
     </motion.section>
   );

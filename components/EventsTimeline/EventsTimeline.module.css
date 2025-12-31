@@ -1,0 +1,132 @@
+.wrap {
+    position: relative;
+    padding: 24px 0;
+    overflow: visible;
+}
+
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: visible;
+}
+
+/* Remove the old straight rail (recommended for a curved timeline) */
+.list::before {
+    content: none;
+}
+
+.item {
+    --focus: 0;
+    --curve-x: 0px;
+
+    position: relative;
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 28px;
+    padding: 32px 16px;
+    border-radius: 16px;
+
+    /* Arc movement (positioning) */
+    transform: translateX(var(--curve-x));
+    will-change: transform;
+    transition: background 200ms ease, box-shadow 200ms ease, backdrop-filter 200ms ease;
+}
+
+.marker {
+    width: 12px;
+    height: 12px;
+    margin-left: 8px;
+    margin-top: 6px;
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+
+    /* Marker can still scale (doesn't affect layout) */
+    transform: scale(calc(0.85 + (var(--focus) * 0.55)));
+    transition: transform 150ms ease-out, background 150ms ease-out, border-color 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+/* Entire block: keep font-size constant, scale with transform to avoid reflow */
+.text {
+    line-height: 1.35;
+    font-size: 1rem;
+    display: inline-block;
+
+    /* White text with opacity based on focus */
+    opacity: calc(0.5 + (var(--focus) * 0.5));
+    color: rgba(255, 255, 255, calc(0.6 + (var(--focus) * 0.4)));
+
+    /* The "gets bigger" effect without changing layout */
+    transform-origin: left center;
+    transform: scale(calc(0.90 + (var(--focus) * 0.35)));
+
+    transition: transform 150ms ease-out, color 150ms ease-out, opacity 150ms ease-out;
+}
+
+/* Format: Date, Time, Name (slightly bigger), Venue */
+.date,
+.time {
+    font-size: 0.78em;
+    opacity: 0.75;
+    color: rgba(186, 230, 253, 0.9);
+    /* sky-200 tone */
+    letter-spacing: 0.02em;
+}
+
+.time {
+    margin-top: 3px;
+}
+
+.name {
+    margin-top: 8px;
+    font-weight: 700;
+    font-size: 1.12em;
+    color: #fff;
+    letter-spacing: -0.01em;
+}
+
+.venue {
+    margin-top: 5px;
+    font-size: 0.85em;
+    opacity: 0.85;
+    color: rgba(186, 230, 253, 0.85);
+    /* sky-200 tone */
+}
+
+/* Active/Highlighted item - subtle feathered background */
+.active {
+    position: relative;
+}
+
+.active::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    background: radial-gradient(ellipse 120% 100% at 20% 50%,
+            rgba(56, 189, 248, 0.12) 0%,
+            rgba(14, 165, 233, 0.06) 40%,
+            transparent 70%);
+    pointer-events: none;
+}
+
+.active .marker {
+    background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 50%, #06b6d4 100%);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+
+
+.active .name {
+    color: #fff;
+}
+
+.active .date,
+.active .time,
+.active .venue {
+    color: rgba(224, 242, 254, 0.95);
+    /* sky-100 for better visibility */
+}

@@ -83,7 +83,7 @@ export function Gallery() {
       <div className="relative z-10 container px-4 md:px-6" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2 max-w-2xl mx-auto">
-            <p className="text-xs uppercase tracking-[0.35em] text-accent/80 mb-1">Kyrat Festival Gallery</p>
+            <p className="text-xs uppercase tracking-[0.35em] text-accent/80 mb-1">Kyrat Gallery</p>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl font-headline text-primary">
               Festival Moments
             </h2>

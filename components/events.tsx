@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Calendar, Clock, MapPin } from "lucide-react";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { LiquidGlassButton } from "./ui/liquid-glass-button";
 
 export function Events() {
   const getImage = (imageId: string) => {
@@ -50,7 +50,7 @@ export function Events() {
                   )}
                 </CardHeader>
                 <CardContent className="p-6 flex-grow flex flex-col">
-                   <Badge
+                  <Badge
                     variant={event.status === "Ongoing" ? "destructive" : "secondary"}
                     className="mb-2 self-start"
                   >
@@ -66,7 +66,7 @@ export function Events() {
                       <Clock className="w-4 h-4" />
                       <span>{event.startTime} - {event.endTime}</span>
                     </div>
-                     <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2">
                       <MapPin className="w-4 h-4" />
                       <span>{event.venue}</span>
                     </div>
@@ -76,11 +76,11 @@ export function Events() {
             );
           })}
         </div>
-         <div className="mt-12 text-center">
-            <Button asChild size="lg">
-              <Link href="/events">View All Events</Link>
-            </Button>
-          </div>
+        <div className="mt-12 text-center">
+          <LiquidGlassButton href="/events">
+            View All Events
+          </LiquidGlassButton>
+        </div>
       </div>
     </section>
   );

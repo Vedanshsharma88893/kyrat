@@ -1,168 +1,143 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { useScroll, useTransform, motion, MotionValue } from "framer-motion";
+import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Constants matching the "Card Stack" aesthetic
-const CARD_WIDTH = 400; // Wider cards
-const CARD_HEIGHT = 600; // Taller cards
-const SPACING = 300; // More spacing to prevent clutter
-const TOTAL_ITEMS = 15;
-const SCROLL_HEIGHT = "400vh"; // Long scroll area
-
-const PRO_SHOW_IMAGES = [
-    "/images/pro-shows/edm-night.png",
-    "/images/pro-shows/rock-concert.png",
-    "/images/pro-shows/dj-night.png",
-    "/images/pro-shows/fusion-night.png",
-    "/images/pro-shows/indie-evening.png",
-    "/images/pro-shows/jazz-night.png",
+const MOMENT_IMAGES = [
+  "/images/moments/IMG-20250621-WA0323.jpg",
+  "/images/moments/IMG-20250621-WA0333 (1).jpg",
+  "/images/moments/IMG-20250621-WA0334.jpg",
+  "/images/moments/IMG-20250621-WA0345.jpg",
+  "/images/moments/IMG-20250621-WA0352.jpg",
+  "/images/moments/IMG-20250621-WA0386.jpg",
+  "/images/moments/WhatsApp Image 2025-12-15 at 18.05.50_961b5302.jpg",
+  "/images/moments/WhatsApp Image 2025-12-15 at 18.05.52_240e6e6f.jpg",
+  "/images/moments/WhatsApp Image 2025-12-15 at 18.05.54_e56ddee3.jpg",
+  "/images/moments/WhatsApp Image 2025-12-15 at 18.05.55_2022add6.jpg",
+  "/images/moments/IMG-20250621-WA0334.jpg",
+  "/images/moments/IMG-20250621-WA0386.jpg",
 ];
 
-const ITEMS = Array.from({ length: TOTAL_ITEMS }, (_, i) => ({
-    id: i,
-    // Cycle through local images
-    src: PRO_SHOW_IMAGES[i % PRO_SHOW_IMAGES.length],
-}));
+const ROWS = [
+  [MOMENT_IMAGES[0], MOMENT_IMAGES[1], MOMENT_IMAGES[2]],
+  [MOMENT_IMAGES[3], MOMENT_IMAGES[4], MOMENT_IMAGES[5]],
+  [MOMENT_IMAGES[6], MOMENT_IMAGES[7], MOMENT_IMAGES[8]],
+  [MOMENT_IMAGES[9], MOMENT_IMAGES[10], MOMENT_IMAGES[11]],
+];
 
-export function FestivalMoments() {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [selectedCard, setSelectedCard] = useState<number | null>(null);
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start start", "end end"],
-    });
+export function FestivalMoments({ onImageClick }: { onImageClick?: (src: string) => void }) {
+  const targetRef = useRef<HTMLDivElement>(null);
+  const [isReady, setIsReady] = useState(false);
 
-    return (
-        <section ref={containerRef} className="relative z-30 bg-neutral-950" style={{ height: SCROLL_HEIGHT }}>
-            <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-visible perspective-[1200px] relative">
+  useEffect(() => {
+    if (typeof window === "undefined") return;
 
-                {/* Rotated 3D Plane */}
-                <motion.div
-                    className="relative z-10 flex items-center justify-center"
-                    style={{
-                        width: `min(90vw, ${CARD_WIDTH}px)`,
-                        height: `min(90vh, ${CARD_HEIGHT}px)`,
-                        transformStyle: "preserve-3d",
-                        rotateX: -15,
-                        rotateY: -30,
-                        rotateZ: 5,
-                    }}
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Slight delay to ensure parent layouts (like pin-spacers) are calculated
+    const timer = setTimeout(() => {
+      setIsReady(true);
+
+      const rows = gsap.utils.toArray<HTMLElement>(".unroll-row");
+
+      rows.forEach((row, i) => {
+        const cards = row.querySelectorAll(".unroll-card");
+
+        // FORCED VISIBILITY INITIAL STATE
+        gsap.set(cards, {
+          opacity: 0.6,
+          rotateX: -15, // Mild tilt back
+          scale: 0.95,
+          transformOrigin: "top center",
+          transformStyle: "preserve-3d",
+        });
+
+        // UNROLL ANIMATION
+        gsap.to(cards, {
+          opacity: 1,
+          rotateX: 0,
+          scale: 1,
+          stagger: 0.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: row,
+            start: "top 95%",
+            end: "top 30%",
+            scrub: 1,
+          }
+        });
+      });
+
+      ScrollTrigger.refresh();
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <section
+      ref={targetRef}
+      id="festival-moments-resilient"
+      className="relative w-full z-[500] bg-transparent overflow-visible"
+      style={{ minHeight: "200vh", padding: "100px 0" }}
+    >
+      <div className="container mx-auto px-4 md:px-12 relative">
+
+        {/* Status indicator */}
+        <div style={{ position: "absolute", top: -20, left: 10, fontSize: "10px", color: "rgba(255,255,255,0.2)" }}>
+          Components: {ROWS.length} rows | State: {isReady ? "GSAP Active" : "Initializing..."}
+        </div>
+
+        {/* Hero Section */}
+        <div className="w-full max-w-7xl flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-white">
+          <div className="flex flex-col text-left">
+            <span className="text-zinc-500 font-bold tracking-[0.4em] text-sm uppercase mb-4">A Visual Journey</span>
+            <h2 className="text-6xl md:text-8xl font-black leading-tight tracking-tighter uppercase">
+              Festival <br /> Moments
+            </h2>
+          </div>
+          <div className="max-w-xs text-right hidden md:block">
+            <p className="text-zinc-400 text-lg font-medium leading-snug">
+              A sequence of images unrolling, guided by scroll, angle and animation.
+            </p>
+          </div>
+        </div>
+
+        {/* Unroll Grid */}
+        <div className="w-full flex flex-col gap-8 md:gap-12" style={{ perspective: "3000px" }}>
+          {ROWS.map((rowImages, rowIndex) => (
+            <div
+              key={rowIndex}
+              className="unroll-row grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 w-full"
+              style={{ transformStyle: "preserve-3d" }}
+            >
+              {rowImages.map((src, imgIndex) => (
+                <div
+                  key={`${src}-${imgIndex}`}
+                  className="unroll-card relative rounded-2xl overflow-hidden cursor-pointer bg-zinc-900 ring-1 ring-white/10"
+                  onClick={() => onImageClick?.(src)}
+                  style={{
+                    minHeight: "300px",
+                    height: "35vh", // Guaranteed height
+                    transformStyle: "preserve-3d"
+                  }}
                 >
-                    {ITEMS.map((item, index) => (
-                        <StackCard
-                            key={index}
-                            index={index}
-                            total={TOTAL_ITEMS}
-                            progress={scrollYProgress}
-                            src={item.src}
-                            isSelected={selectedCard === index}
-                            onSelect={() => setSelectedCard(selectedCard === index ? null : index)}
-                        />
-                    ))}
-                </motion.div>
+                  <img
+                    src={encodeURI(src)}
+                    alt="Captured Moment"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-white/5 opacity-0 hover:opacity-100 transition-opacity" />
+                </div>
+              ))}
             </div>
-        </section>
-    );
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }
 
-function StackCard({ 
-    index, 
-    total, 
-    progress, 
-    src, 
-    isSelected = false,
-    onSelect = () => {}
-}: { 
-    index: number, 
-    total: number, 
-    progress: MotionValue<number>, 
-    src: string,
-    isSelected?: boolean,
-    onSelect?: () => void
-}) {
-    const [isHovered, setIsHovered] = useState(false);
-    // Initial Z position:
-    // We start deeply shifted back (-5000) so the first card (index 0) is invisible at start.
-    const initialZ = -index * SPACING - 5000;
-
-    // Movement: 
-    // We need to travel:
-    // 1. The 5000px deep offset to bring Card 0 to camera.
-    // 2. The Total Stack Depth (15 * 300 = 4500).
-    // 3. A buffer to push them past the camera (e.g. +2000).
-    const distanceToTravel = (total * SPACING) + 5000 + 2000;
-
-    // Global Z movement
-    const moveZ = useTransform(progress, [0, 1], [0, distanceToTravel]);
-
-    // Net Z for this card - adjust if selected
-    const baseZ = useTransform(moveZ, (v) => initialZ + v);
-    const z = useTransform(
-        [baseZ, isSelected ? 1 : 0],
-        ([z, selected]) => selected ? 1000 : z
-    );
-
-    // Fade Logic:
-    // Fade IN from deep (-5000 range)
-    // Fade OUT as it hits camera (200)
-    const opacity = useTransform(z,
-        [-6000, -3000, 200, 800],
-        [0, 1, 1, 0]
-    );
-
-    // Scale Logic: 
-    const scale = useTransform(z, [-6000, 200], [0.6, 1]);
-
-    return (
-        <motion.div
-            style={{
-                position: "absolute",
-                inset: 0,
-                zIndex: isSelected ? 50 : undefined,
-                z: z,
-                opacity: opacity,
-                scale: scale,
-                y: isHovered ? -20 : 0,
-                transition: 'transform 0.2s ease, z 0.3s ease',
-                transformStyle: 'preserve-3d',
-                cursor: 'pointer',
-            }}
-            className="rounded-3xl overflow-hidden shadow-2xl bg-neutral-900 border border-white/10 transition-transform duration-200 ease-in-out"
-            onClick={(e) => {
-                e.stopPropagation();
-                onSelect();
-            }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            whileHover={{
-                boxShadow: isSelected ? '0 0 30px rgba(255,255,255,0.3)' : '0 10px 25px -5px rgba(0,0,0,0.3)',
-                zIndex: 40,
-            }}
-            whileTap={{
-                scale: 0.98,
-                transition: { duration: 0.1 },
-            }}
-        >
-            <Image
-                src={src}
-                alt={`Moment ${index}`}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 500px"
-                priority={index < 3}
-            />
-
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
-
-            {/* Content */}
-            <div className="absolute bottom-6 left-6">
-                <span className="text-8xl font-black text-white/10 select-none font-headline">
-                    {(index + 1).toString().padStart(2, '0')}
-                </span>
-            </div>
-        </motion.div>
-    );
-}
+export default FestivalMoments;

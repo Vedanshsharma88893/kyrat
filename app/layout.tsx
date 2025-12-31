@@ -11,8 +11,8 @@ const spaceGrotesk = Space_Grotesk({
   variable: '--font-space-grotesk',
 });
 
-const APP_NAME = 'KYRAT Festival Hub';
-const APP_DESCRIPTION = 'Your one-stop hub for the KYRAT Festival. Explore events, schedules, and more.';
+const APP_NAME = 'Kyrat';
+const APP_DESCRIPTION = 'Your one-stop hub for Kyrat. Explore events, schedules, and more.';
 const APP_URL = 'https://kyrat.live'; // Replace with your actual domain
 
 export const metadata: Metadata = {
@@ -22,6 +22,11 @@ export const metadata: Metadata = {
   },
   description: APP_DESCRIPTION,
   applicationName: APP_NAME,
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
   appleWebApp: {
     capable: true,
     title: APP_NAME,
@@ -34,11 +39,13 @@ export const metadata: Metadata = {
     siteName: APP_NAME,
     locale: 'en_US',
     type: 'website',
+    images: ['/logo.png'],
   },
   twitter: {
     card: 'summary_large_image',
     title: APP_NAME,
     description: APP_DESCRIPTION,
+    images: ['/logo.png'],
   },
   metadataBase: new URL(APP_URL),
 };
@@ -65,3 +72,4 @@ export default function RootLayout({
     </html>
   );
 }
+

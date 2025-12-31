@@ -13,17 +13,10 @@ export function Sponsors() {
   };
 
   return (
-    <section id="sponsors" className="w-full py-12 md:py-24 lg:py-32">
+    <section id="sponsors" className="w-full py-12 md:py-24 lg:py-32 bg-transparent relative z-10">
       <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary">
-              Our Valued Sponsors
-            </h2>
-            <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              This festival is made possible by the generous support of our partners.
-            </p>
-          </div>
+        <div className="flex flex-col items-center justify-center space-y-4 text-center hidden">
+          {/* Headings removed */}
         </div>
 
         <div className="mt-12 space-y-16">
@@ -34,32 +27,32 @@ export function Sponsors() {
               <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-background to-transparent" />
 
               <div className="flex gap-8 md:gap-12 overflow-x-auto pb-4 snap-x snap-mandatory scroll-smooth info-parent-2 justify-center md:justify-start">
-              {sponsors.platinum.map((sponsor) => {
-                const image = getImage(sponsor.logoId);
-                return (
-                  <Link href={sponsor.website} key={sponsor.id} target="_blank" rel="noopener noreferrer">
-                    <motion.div
-                      whileHover={{ 
-                        scale: 1.1, 
-                        filter: "grayscale(0%) drop-shadow(0 0 0.75rem hsl(var(--primary) / 0.5))"
-                      }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                      className="filter grayscale snap-center flex-shrink-0 px-2"
-                    >
-                      {image && (
-                        <Image
-                          src={image.imageUrl}
-                          alt={sponsor.name}
-                          width={180}
-                          height={90}
-                          className="object-contain md:w-[200px] md:h-[100px]"
-                          data-ai-hint={image.imageHint}
-                        />
-                      )}
-                    </motion.div>
-                  </Link>
-                );
-              })}
+                {sponsors.platinum.map((sponsor) => {
+                  const image = getImage(sponsor.logoId);
+                  return (
+                    <Link href={sponsor.website} key={sponsor.id} target="_blank" rel="noopener noreferrer">
+                      <motion.div
+                        whileHover={{
+                          scale: 1.1,
+                          filter: "grayscale(0%) drop-shadow(0 0 0.75rem hsl(var(--primary) / 0.5))"
+                        }}
+                        transition={{ type: "spring", stiffness: 300 }}
+                        className="filter grayscale snap-center flex-shrink-0 px-2"
+                      >
+                        {image && (
+                          <Image
+                            src={image.imageUrl}
+                            alt={sponsor.name}
+                            width={180}
+                            height={90}
+                            className="object-contain md:w-[200px] md:h-[100px]"
+                            data-ai-hint={image.imageHint}
+                          />
+                        )}
+                      </motion.div>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -71,32 +64,32 @@ export function Sponsors() {
               <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-background to-transparent" />
 
               <div className="flex gap-8 md:gap-10 overflow-x-auto pb-4 snap-x snap-mandatory scroll-smooth info-parent-3 justify-center md:justify-start">
-              {sponsors.gold.map((sponsor) => {
-                const image = getImage(sponsor.logoId);
-                return (
-                  <Link href={sponsor.website} key={sponsor.id} target="_blank" rel="noopener noreferrer">
-                     <motion.div
-                      whileHover={{ 
-                        scale: 1.1, 
-                        filter: "grayscale(0%) drop-shadow(0 0 0.5rem hsl(var(--primary) / 0.4))"
-                      }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                      className="filter grayscale snap-center flex-shrink-0 px-2"
-                    >
-                      {image && (
-                        <Image
-                          src={image.imageUrl}
-                          alt={sponsor.name}
-                          width={150}
-                          height={75}
-                          className="object-contain md:w-[170px] md:h-[85px]"
-                          data-ai-hint={image.imageHint}
-                        />
-                      )}
-                    </motion.div>
-                  </Link>
-                );
-              })}
+                {sponsors.gold.map((sponsor) => {
+                  const image = getImage(sponsor.logoId);
+                  return (
+                    <Link href={sponsor.website} key={sponsor.id} target="_blank" rel="noopener noreferrer">
+                      <motion.div
+                        whileHover={{
+                          scale: 1.1,
+                          filter: "grayscale(0%) drop-shadow(0 0 0.5rem hsl(var(--primary) / 0.4))"
+                        }}
+                        transition={{ type: "spring", stiffness: 300 }}
+                        className="filter grayscale snap-center flex-shrink-0 px-2"
+                      >
+                        {image && (
+                          <Image
+                            src={image.imageUrl}
+                            alt={sponsor.name}
+                            width={150}
+                            height={75}
+                            className="object-contain md:w-[170px] md:h-[85px]"
+                            data-ai-hint={image.imageHint}
+                          />
+                        )}
+                      </motion.div>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </div>

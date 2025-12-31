@@ -1,5 +1,7 @@
 import { MetadataRoute } from 'next'
- 
+
+export const dynamic = 'force-static'
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://kyrat.live'; // Replace with your actual domain
   return [
@@ -27,7 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.5,
     },
-     {
+    {
       url: `${baseUrl}/#sponsors`,
       lastModified: new Date(),
       changeFrequency: 'monthly',

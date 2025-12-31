@@ -1,85 +1,160 @@
 "use client";
 
-import Image from "next/image";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { ArrowDown } from "lucide-react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export function Hero() {
-  const heroImage = PlaceHolderImages.find((img) => img.id === "hero-background");
-  const logoImage = PlaceHolderImages.find((img) => img.id === "sponsor-aurora");
+gsap.registerPlugin(ScrollTrigger);
 
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.2,
-      },
-    },
-  };
+export function Hero({ onLoaded }: { onLoaded?: () => void }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadProgress, setLoadProgress] = useState(0);
 
-  const itemVariants = {
-    hidden: { y: 20 },
-    visible: { y: 0, transition: { type: "spring", stiffness: 100 } },
-  };
+  const frameCount = 151;
+  const currentFrame = (index: number) =>
+    `/videos/hero/frames/frame${index.toString().padStart(4, "0")}.webp`;
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext("2d");
+    if (!canvas || !context) return;
+
+    // Set canvas dimensions based on device - use device pixel ratio for crisp rendering
+    const updateCanvasSize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      context.scale(dpr, dpr);
+    };
+
+    updateCanvasSize();
+
+    const images: HTMLImageElement[] = [];
+    let loadedCount = 0;
+
+    const ctx = gsap.context(() => {
+      const airpods = { frame: 1 };
+
+      const render = () => {
+        const width = canvas.width / (Math.min(window.devicePixelRatio || 1, 2));
+        const height = canvas.height / (Math.min(window.devicePixelRatio || 1, 2));
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        const img = images[airpods.frame - 1];
+        if (img) {
+          // Calculate dimensions to cover the viewport while maintaining aspect ratio
+          const imgRatio = img.width / img.height;
+          const canvasRatio = width / height;
+
+          let drawWidth, drawHeight, offsetX, offsetY;
+
+          if (imgRatio > canvasRatio) {
+            // Image is wider - fit by height, crop width
+            drawHeight = height;
+            drawWidth = height * imgRatio;
+            offsetX = (width - drawWidth) / 2;
+            offsetY = 0;
+          } else {
+            // Image is taller - fit by width, crop height
+            drawWidth = width;
+            drawHeight = width / imgRatio;
+            offsetX = 0;
+            offsetY = (height - drawHeight) / 2;
+          }
+
+          context.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        }
+      };
+
+      const preloadImages = () => {
+        for (let i = 1; i <= frameCount; i++) {
+          const img = new Image();
+          img.src = currentFrame(i);
+          img.onload = () => {
+            loadedCount++;
+            setLoadProgress(Math.round((loadedCount / frameCount) * 100));
+            if (loadedCount === frameCount) {
+              setIsLoading(false);
+              onLoaded?.();
+              initAnimation();
+            }
+          };
+          images.push(img);
+        }
+      };
+
+      const initAnimation = () => {
+        render();
+
+        ScrollTrigger.create({
+          trigger: containerRef.current,
+          start: "top top",
+          end: "+=500%",
+          pin: true,
+          scrub: 0.5,
+          onUpdate: (self) => {
+            const frameIndex = Math.floor(self.progress * (frameCount - 1)) + 1;
+            airpods.frame = frameIndex;
+            render();
+
+            // Fade out and blur effect at the very end
+            if (self.progress > 0.99) {
+              const fadeProgress = (self.progress - 0.99) / 0.01;
+              const opacity = 1 - fadeProgress;
+              const blurAmount = fadeProgress * 20;
+
+              canvas.style.opacity = opacity.toString();
+              canvas.style.filter = `blur(${blurAmount}px)`;
+            } else {
+              canvas.style.opacity = "1";
+              canvas.style.filter = "blur(0px)";
+            }
+          },
+        });
+      };
+
+      // Handle resize
+      const handleResize = () => {
+        updateCanvasSize();
+        render();
+      };
+
+      window.addEventListener("resize", handleResize);
+      preloadImages();
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    });
+
+    return () => ctx.revert();
+  }, [onLoaded]);
 
   return (
-    <section id="hero" className="relative w-full h-[100vh]">
-      <div className="absolute inset-0 -z-10">
-        {heroImage && (
-          <Image
-            src={heroImage.imageUrl}
-            alt={heroImage.description}
-            fill
-            className="object-cover"
-            priority
-            data-ai-hint={heroImage.imageHint}
-          />
-        )}
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
-      <motion.div 
-        className="container relative flex h-full flex-col items-center justify-center text-center p-4"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        >
-        <motion.div 
-          variants={itemVariants}
-          animate={{
-            y: [0, -10, 0],
-            transition: {
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-            },
+    <section
+      ref={containerRef}
+      className="relative w-full bg-transparent overflow-hidden"
+      style={{ height: "100vh", minHeight: "100svh" }}
+    >
+      <div className="w-full h-full flex items-center justify-center">
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full"
+          style={{
+            objectFit: "cover",
+            maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
+            mixBlendMode: "normal",
           }}
-          >
-          {logoImage && (
-            <Image
-              src={logoImage.imageUrl}
-              alt="Logo"
-              width={96}
-              height={96}
-              className="rounded-full w-20 h-20 md:w-24 md:h-24 shadow-lg"
-              data-ai-hint={logoImage.imageHint}
-            />
-          )}
-        </motion.div>
-        <motion.div variants={itemVariants} className="space-y-4 mt-4">
-          <h1 className="text-4xl font-extrabold tracking-tight text-primary-foreground sm:text-5xl md:text-7xl lg:text-8xl font-headline drop-shadow-md">
-            KYRAT Festival
-          </h1>
-          <p className="max-w-[700px] text-primary-foreground/80 text-base md:text-xl drop-shadow">
-            Immerse yourself in a celebration of music, art, and nature.
-          </p>
-        </motion.div>
-        <motion.div 
-          className="absolute bottom-8 animate-bounce">
-          <ArrowDown className="h-8 w-8 text-primary-foreground/50" />
-        </motion.div>
-      </motion.div>
+        />
+      </div>
     </section>
   );
 }
