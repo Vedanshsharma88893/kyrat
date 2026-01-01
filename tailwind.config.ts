@@ -20,6 +20,7 @@ export default {
         body: ['var(--font-space-grotesk)', 'sans-serif'],
         headline: ['var(--font-space-grotesk)', 'sans-serif'],
         code: ['monospace'],
+        cursive: ['var(--font-pinyon)', 'cursive'],
       },
       colors: {
         background: 'hsl(var(--background))',

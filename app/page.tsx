@@ -3,6 +3,7 @@
 import { Suspense, useRef, useEffect, useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import Image from "next/image";
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -41,6 +42,12 @@ export default function Home() {
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [isPageLoaded, setIsPageLoaded] = useState(false);
   const [isHeroLoaded, setIsHeroLoaded] = useState(false);
+
+  // Scroll-linked brightness for "diving deeper" effect - starts after Schedule (50% scroll)
+  // We start at 1.2 brightness and 0 overlay opacity for a "bright" surface feel.
+  const { scrollYProgress } = useScroll();
+  const brightness = useTransform(scrollYProgress, [0, 0.5, 0.85, 1], [1.2, 1.2, 0.3, 0.3]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.5, 0.85, 1], [0, 0, 0.7, 0.7]);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -81,23 +88,33 @@ export default function Home() {
 
       <div className={`flex min-h-screen flex-col text-foreground transition-opacity duration-500 overflow-x-hidden ${isPageLoaded ? 'opacity-100' : 'opacity-0'}`}>
         {/* Background Video Container */}
-        <div className="fixed inset-0 w-full h-full z-0 overflow-hidden bg-neutral-900/10">
-          <video
+        <motion.div
+          className="fixed inset-0 w-screen h-screen z-0 overflow-hidden bg-neutral-900 pointer-events-none"
+        >
+          <motion.video
             ref={videoRef}
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ objectFit: 'cover' }}
+            className="absolute inset-0 w-full h-full object-fill"
+            style={{
+              filter: useTransform(brightness, (v) => `brightness(${v})`),
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden'
+            }}
           >
             <source src="/videos/bg.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-black/40" /> {/* Overlay for contrast */}
-        </div>
+          </motion.video>
+          <motion.div
+            className="absolute inset-0 bg-black"
+            style={{ opacity: overlayOpacity }}
+          /> {/* Dynamic Overlay for extra depth */}
+        </motion.div>
         <ScrollOverlay />
         <SideNav />
+        {/* SideNav moved to bottom for better clickability */}
         {/* Header removed as per request */}
         <main className="flex-1 relative z-10">
           <div className="mb-24 md:mb-32">
@@ -130,7 +147,6 @@ export default function Home() {
               </FocusScroll>
             </Suspense>
 
-            {/* Creative Gateway to Campus Map */}
             {/* Creative Gateway to Campus Map */}
             <div className="relative w-full h-[100vh] z-40 my-24 border-y border-white/10 pointer-events-none">
               <div className="sticky top-0 h-full w-full flex items-center justify-start overflow-hidden">

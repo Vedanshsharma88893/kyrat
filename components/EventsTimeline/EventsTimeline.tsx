@@ -34,11 +34,14 @@ export default function EventsTimeline({ events, initialActiveId }: Props) {
             raf = 0;
 
             const vh = window.innerHeight || 1;
+            const vw = window.innerWidth || 1;
             const centerY = vh / 2;
+
+            const isMobile = vw < 768;
 
             // Arc controls (tweak freely)
             const band = vh * 0.65; // how tall the arc "window" is around center
-            const amplitude = 280; // px: how far it bulges sideways
+            const amplitude = isMobile ? 60 : 280; // px: how far it bulges sideways
 
             const nodes = itemRefs.current.filter((n): n is HTMLLIElement => n !== null);
             if (!nodes.length) return;

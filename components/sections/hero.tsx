@@ -49,27 +49,7 @@ export function Hero({ onLoaded }: { onLoaded?: () => void }) {
         context.clearRect(0, 0, canvas.width, canvas.height);
         const img = images[airpods.frame - 1];
         if (img) {
-          // Calculate dimensions to cover the viewport while maintaining aspect ratio
-          const imgRatio = img.width / img.height;
-          const canvasRatio = width / height;
-
-          let drawWidth, drawHeight, offsetX, offsetY;
-
-          if (imgRatio > canvasRatio) {
-            // Image is wider - fit by height, crop width
-            drawHeight = height;
-            drawWidth = height * imgRatio;
-            offsetX = (width - drawWidth) / 2;
-            offsetY = 0;
-          } else {
-            // Image is taller - fit by width, crop height
-            drawWidth = width;
-            drawHeight = width / imgRatio;
-            offsetX = 0;
-            offsetY = (height - drawHeight) / 2;
-          }
-
-          context.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+          context.drawImage(img, 0, 0, width, height);
         }
       };
 
@@ -105,6 +85,12 @@ export function Hero({ onLoaded }: { onLoaded?: () => void }) {
             render();
 
             // Fade out and blur effect at the very end
+            const maskEnd = self.progress > 0.95
+              ? 100 - (self.progress - 0.95) * 300
+              : 100;
+
+            canvas.style.setProperty('--mask-end', `${maskEnd}%`);
+
             if (self.progress > 0.99) {
               const fadeProgress = (self.progress - 0.99) / 0.01;
               const opacity = 1 - fadeProgress;
@@ -148,9 +134,8 @@ export function Hero({ onLoaded }: { onLoaded?: () => void }) {
           ref={canvasRef}
           className="absolute inset-0 w-full h-full"
           style={{
-            objectFit: "cover",
-            maskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, black 85%, transparent 100%)",
+            maskImage: "linear-gradient(to bottom, black var(--mask-end, 100%), transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black var(--mask-end, 100%), transparent 100%)",
             mixBlendMode: "normal",
           }}
         />
