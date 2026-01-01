@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import { Space_Grotesk } from 'next/font/google';
+import { Space_Grotesk, Pinyon_Script } from 'next/font/google';
 import { Analytics } from '@/components/analytics';
 import { Suspense } from 'react';
 
@@ -9,6 +9,13 @@ const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-space-grotesk',
+});
+
+const pinyonScript = Pinyon_Script({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-pinyon',
 });
 
 const APP_NAME = 'Kyrat';
@@ -61,7 +68,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`dark ${spaceGrotesk.variable}`}>
+    <html lang="en" className={`dark ${spaceGrotesk.variable} ${pinyonScript.variable}`}>
       <body className="font-body antialiased">
         {children}
         <Toaster />

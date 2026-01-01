@@ -1,133 +1,156 @@
 "use client";
 
-import { useRef, useState } from "react";
 import Image from "next/image";
-import { useScroll, useTransform, motion, AnimatePresence } from "framer-motion";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import React, { useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { X } from "lucide-react";
 
-export function Gallery() {
-  const galleryImageIds = [
-    "gallery-1", "gallery-2", "gallery-3",
-    "gallery-4", "gallery-5", "gallery-6",
-    "event-music", "event-art", "event-art-2",
-    "event-food", "event-food-2"
-  ];
+const MOMENT_IMAGES = [
+  "/images/moments/IMG-20250621-WA0323.jpg",
+  "/images/moments/IMG-20250621-WA0333 (1).jpg",
+  "/images/moments/IMG-20250621-WA0334.jpg",
+  "/images/moments/IMG-20250621-WA0345.jpg",
+  "/images/moments/IMG-20250621-WA0352.jpg",
+  "/images/moments/IMG-20250621-WA0386.jpg",
+  "/images/moments/WhatsApp Image 2025-12-15 at 18.05.50_961b5302.jpg",
+  "/images/moments/WhatsApp Image 2025-12-15 at 18.05.52_240e6e6f.jpg",
+  "/images/moments/WhatsApp Image 2025-12-15 at 18.05.54_e56ddee3.jpg",
+  "/images/moments/WhatsApp Image 2025-12-15 at 18.05.55_2022add6.jpg",
+  "/images/moments/IMG-20250621-WA0334.jpg",
+  "/images/moments/IMG-20250621-WA0386.jpg",
+];
 
-  const images = PlaceHolderImages.filter((img) => galleryImageIds.includes(img.id));
+const Pin = ({ color = "#ef4444" }) => (
+  <div className="absolute top-2 left-1/2 -translate-x-1/2 z-30 drop-shadow-md pointer-events-none">
+    <div className="w-4 h-4 rounded-full bg-red-600 border border-white/30 shadow-inner" style={{ backgroundColor: color }} />
+    <div className="w-1 h-3 bg-gray-400 absolute left-1/2 -translate-x-1/2 top-3 rounded-full opacity-40" />
+  </div>
+);
 
-  // Split into two rows
-  const mid = Math.ceil(images.length / 2);
-  const row1 = images.slice(0, mid);
-  const row2 = images.slice(mid);
+const PaperClip = () => (
+  <div className="absolute -top-6 left-6 z-30 opacity-90 drop-shadow-sm -rotate-12 pointer-events-none">
+    <svg width="32" height="64" viewBox="0 0 24 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 4C8.686 4 6 6.686 6 10V34C6 38.418 9.582 42 14 42C18.418 42 22 38.418 22 34V14H18V34C18 36.209 16.209 38 14 38C11.791 38 10 36.209 10 34V10C10 8.895 10.895 8 12 8C13.105 8 14 8.895 14 10V28C14 29.105 13.105 30 12 30C10.895 30 10 29.105 10 28V14H6V28C6 31.314 8.686 34 12 34C15.314 34 18 31.314 18 28V10C18 6.686 15.314 4 12 4Z" fill="#ccd6f6" className="drop-shadow-sm" />
+    </svg>
+  </div>
+);
 
-  // Duplicating for infinite feel (simple version)
-  const marqueeRow1 = [...row1, ...row1, ...row1];
-  const marqueeRow2 = [...row2, ...row2, ...row2];
+function GalleryCard({ src, index }: { src: string; index: number }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
 
-  // Marquee Speed control via scroll
-  // Row 1 moves left, Row 2 moves right
-  const x1 = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
-  const x2 = useTransform(scrollYProgress, [0, 1], ["-50%", "0%"]);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["12deg", "-12deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-12deg", "12deg"]);
 
-  const [selectedImage, setSelectedImage] = useState<null | typeof images[0]>(null);
+  // Stable random variations based on index
+  const baseRotation = useMemo(() => ((index * 1337) % 16) - 8, [index]);
+  const xOffset = useMemo(() => ((index * 42) % 30) - 15, [index]);
+  const yOffset = useMemo(() => ((index * 73) % 40) - 20, [index]);
+  const decorType = useMemo(() => (index % 4), [index]); // 0: Pin Red, 1: PaperClip, 2: Pin Blue, 3: None
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
-    <>
-      <section ref={containerRef} id="gallery" className="w-full py-12 md:py-24 lg:py-32 bg-background overflow-hidden">
-        <div className="container px-4 md:px-6 mb-12">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary">
-              Festival Moments
-            </h2>
-            <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
-              Experience the vibe through our lens.
-            </p>
-          </div>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8, rotate: baseRotation, x: xOffset, y: yOffset + 100 }}
+      whileInView={{ opacity: 1, scale: 1, y: yOffset }}
+      transition={{ duration: 0.8, delay: index * 0.05, ease: [0.21, 0.47, 0.32, 0.98] }}
+      viewport={{ once: true, margin: "-100px" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateY,
+        rotateX,
+        rotate: baseRotation,
+        x: xOffset,
+        y: yOffset,
+        transformStyle: "preserve-3d",
+        zIndex: 10 + index % 10 // Layer them slightly
+      }}
+      className="relative aspect-[3/4] w-full max-w-[280px] cursor-pointer group"
+    >
+      <div
+        className="absolute inset-0 rounded-none bg-[#fdfdfd] p-3 pb-10 shadow-2xl transition-all duration-300 group-hover:shadow-teal-500/30 group-hover:-translate-y-2"
+        style={{
+          transform: "translateZ(30px)",
+          transformStyle: "preserve-3d",
+        }}
+      >
+        {/* Random Decorations - Moved inside 3D container with higher translateZ */}
+        <div style={{ transform: "translateZ(40px)", transformStyle: "preserve-3d" }} className="absolute inset-0 pointer-events-none z-50">
+          {decorType === 0 && <Pin color="#ef4444" />}
+          {decorType === 1 && <PaperClip />}
+          {decorType === 2 && <Pin color="#3b82f6" />}
         </div>
 
-        <div className="flex flex-col gap-8">
-          {/* Row 1 */}
-          <motion.div style={{ x: x1 }} className="flex gap-4 w-max pl-4">
-            {marqueeRow1.map((image, i) => (
-              <div
-                key={`${image.id}-1-${i}`}
-                className="relative w-[300px] h-[200px] md:w-[400px] md:h-[280px] flex-shrink-0 rounded-xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
-                onClick={() => setSelectedImage(image)}
-              >
-                <Image
-                  src={image.imageUrl}
-                  alt={image.description}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </motion.div>
-
-          {/* Row 2 */}
-          <motion.div style={{ x: x2 }} className="flex gap-4 w-max pl-4">
-            {marqueeRow2.map((image, i) => (
-              <div
-                key={`${image.id}-2-${i}`}
-                className="relative w-[300px] h-[200px] md:w-[400px] md:h-[280px] flex-shrink-0 rounded-xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
-                onClick={() => setSelectedImage(image)}
-              >
-                <Image
-                  src={image.imageUrl}
-                  alt={image.description}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </motion.div>
+        <div className="relative w-full h-full overflow-hidden border border-black/5">
+          <Image
+            src={encodeURI(src)}
+            alt="Festival Moment"
+            fill
+            className="object-cover transition-all duration-700 ease-out group-hover:scale-110 grayscale-[0.2] group-hover:grayscale-0"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
         </div>
-      </section>
 
-      {/* Lightbox Modal */}
-      <AnimatePresence>
-        {selectedImage && (
+        {/* Shine Effect */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-tr from-white/0 via-white/20 to-transparent" />
+      </div>
+
+      {/* Deep Shadow for table-top depth */}
+      <div className="absolute inset-0 bg-black/10 blur-xl translate-y-4 translate-x-2 -z-10 opacity-40 group-hover:opacity-60 transition-opacity" />
+    </motion.div>
+  );
+}
+
+export function Gallery() {
+  return (
+    <section id="gallery" className="relative w-full py-24 md:py-48 bg-transparent overflow-visible">
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
+        <div className="text-center mb-28 md:mb-40 space-y-4">
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
           >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="relative max-w-5xl w-full aspect-video rounded-lg overflow-hidden"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Image
-                src={selectedImage.imageUrl}
-                alt={selectedImage.description}
-                fill
-                className="object-contain" // Contain to show full image
-              />
-              <button
-                onClick={() => setSelectedImage(null)}
-                className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors"
-              >
-                <X className="w-6 h-6" />
-              </button>
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white">
-                <p className="text-lg font-medium">{selectedImage.description}</p>
-              </div>
-            </motion.div>
+            <h2 className="text-7xl md:text-[10rem] font-bold font-cursive text-white tracking-normal drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+              Moments
+            </h2>
+            <div className="h-1 w-24 bg-teal-400 mx-auto mt-6 rounded-full shadow-[0_0_15px_#2dd4bf]" />
+            <p className="mt-8 text-teal-100/60 text-lg md:text-xl font-light tracking-[0.3em] uppercase">
+              The Kyrat Chronicles
+            </p>
           </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+        </div>
+
+        {/* Scattered "Tabletop" Layout */}
+        <div
+          className="flex flex-wrap justify-center items-center gap-12 sm:gap-16 md:gap-20 max-w-[1400px] mx-auto"
+          style={{ perspective: "2000px" }}
+        >
+          {MOMENT_IMAGES.map((src, i) => (
+            <GalleryCard key={`${src}-${i}`} src={src} index={i} />
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }

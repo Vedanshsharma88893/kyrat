@@ -13,7 +13,7 @@ export function Sponsors() {
   };
 
   return (
-    <section id="sponsors" className="w-full py-12 md:py-24 lg:py-32">
+    <section id="sponsors" className="w-full py-12 md:py-24 lg:py-32 bg-transparent">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
@@ -35,8 +35,8 @@ export function Sponsors() {
                 return (
                   <Link href={sponsor.website} key={sponsor.id} target="_blank" rel="noopener noreferrer">
                     <motion.div
-                      whileHover={{ 
-                        scale: 1.1, 
+                      whileHover={{
+                        scale: 1.1,
                         filter: "grayscale(0%) drop-shadow(0 0 0.75rem hsl(var(--primary) / 0.5))"
                       }}
                       transition={{ type: "spring", stiffness: 300 }}
@@ -66,9 +66,9 @@ export function Sponsors() {
                 const image = getImage(sponsor.logoId);
                 return (
                   <Link href={sponsor.website} key={sponsor.id} target="_blank" rel="noopener noreferrer">
-                     <motion.div
-                      whileHover={{ 
-                        scale: 1.1, 
+                    <motion.div
+                      whileHover={{
+                        scale: 1.1,
                         filter: "grayscale(0%) drop-shadow(0 0 0.5rem hsl(var(--primary) / 0.4))"
                       }}
                       transition={{ type: "spring", stiffness: 300 }}

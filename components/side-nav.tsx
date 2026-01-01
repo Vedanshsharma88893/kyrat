@@ -101,7 +101,7 @@ export function SideNav() {
                 stiffness: 260,
                 damping: 20,
             }}
-            className={`fixed right-0 top-1/2 z-[60] -translate-y-1/2 hidden md:block ${shouldHideNav ? 'pointer-events-none' : 'pointer-events-auto'}`}
+            className={`fixed right-0 top-1/2 z-[99] -translate-y-1/2 hidden md:block ${shouldHideNav ? 'pointer-events-none' : 'pointer-events-auto'}`}
         >
             <ul className="flex flex-col items-end gap-4 pr-8">
                 {navItems.map((item) => {

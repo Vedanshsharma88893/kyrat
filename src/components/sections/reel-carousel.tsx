@@ -81,7 +81,7 @@ export function ReelCarousel() {
     }, [isPlaying, currentIndex, goToNext]);
 
     return (
-        <section className="w-full bg-background py-24">
+        <section className="w-full bg-transparent py-24">
             <div className="container px-4 md:px-6 mb-12">
                 <div className="flex flex-col items-center justify-center space-y-4 text-center">
                     <h2 className="text-4xl md:text-6xl font-bold tracking-tighter font-headline text-primary">

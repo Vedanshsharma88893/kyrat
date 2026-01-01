@@ -118,8 +118,6 @@
     border-color: rgba(255, 255, 255, 0.4);
 }
 
-
-
 .active .name {
     color: #fff;
 }
@@ -128,5 +126,22 @@
 .active .time,
 .active .venue {
     color: rgba(224, 242, 254, 0.95);
-    /* sky-100 for better visibility */
+}
+
+@media (max-width: 768px) {
+    .item {
+        gap: 16px;
+        padding: 24px 12px;
+        grid-template-columns: 20px 1fr;
+    }
+
+    .marker {
+        width: 10px;
+        height: 10px;
+        margin-left: 5px;
+    }
+
+    .text {
+        font-size: 0.9rem;
+    }
 }

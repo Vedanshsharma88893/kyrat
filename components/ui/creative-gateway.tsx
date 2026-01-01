@@ -51,10 +51,10 @@ export function CreativeGateway({ href, label, className, variant = "sticker" }:
                         style={{ x: y }} // Parallax side scroll
                         className="flex items-center gap-2"
                     >
-                        <span className="text-6xl md:text-8xl font-black font-headline text-foreground/80 group-hover:text-foreground transition-colors duration-300 blur-sm group-hover:blur-0">
+                        <span className="text-lg md:text-2xl font-black font-headline text-foreground/80 group-hover:text-foreground transition-colors duration-300 blur-sm group-hover:blur-0">
                             {label}
                         </span>
-                        <ArrowUpRight className="text-foreground/50 w-12 h-12 group-hover:rotate-45 transition-transform" />
+                        <ArrowUpRight className="text-foreground/50 w-5 h-5 group-hover:rotate-45 transition-transform" />
                     </motion.div>
                 </Link>
             </div>

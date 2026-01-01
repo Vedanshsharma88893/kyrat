@@ -2,149 +2,155 @@
 
 import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import React, { useCallback } from "react";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
+import React, { useMemo } from "react";
+import { cn } from "@/lib/utils";
 
-const sectionVariants = {
-  hidden: { opacity: 0, y: 80 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, ease: "easeOut" },
-  },
-};
+const MOMENT_IMAGES = [
+  "/images/moments/IMG-20250621-WA0323.jpg",
+  "/images/moments/IMG-20250621-WA0333 (1).jpg",
+  "/images/moments/IMG-20250621-WA0334.jpg",
+  "/images/moments/IMG-20250621-WA0345.jpg",
+  "/images/moments/IMG-20250621-WA0352.jpg",
+  "/images/moments/IMG-20250621-WA0386.jpg",
+  "/images/moments/WhatsApp Image 2025-12-15 at 18.05.50_961b5302.jpg",
+  "/images/moments/WhatsApp Image 2025-12-15 at 18.05.52_240e6e6f.jpg",
+  "/images/moments/WhatsApp Image 2025-12-15 at 18.05.54_e56ddee3.jpg",
+  "/images/moments/WhatsApp Image 2025-12-15 at 18.05.55_2022add6.jpg",
+  "/images/moments/IMG-20250621-WA0334.jpg",
+  "/images/moments/IMG-20250621-WA0386.jpg",
+];
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.9 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { type: "spring", stiffness: 120, damping: 18 },
-  },
-};
+const Pin = ({ color = "#ef4444" }) => (
+  <div className="absolute top-2 left-1/2 -translate-x-1/2 z-30 drop-shadow-md pointer-events-none">
+    <div className="w-4 h-4 rounded-full bg-red-600 border border-white/30 shadow-inner" style={{ backgroundColor: color }} />
+    <div className="w-1 h-3 bg-gray-400 absolute left-1/2 -translate-x-1/2 top-3 rounded-full opacity-40" />
+  </div>
+);
 
-export function Gallery() {
-  const galleryImageIds = [
-    "gallery-1",
-    "gallery-2",
-    "gallery-3",
-    "gallery-4",
-    "gallery-5",
-    "gallery-6",
-  ];
-  const images = PlaceHolderImages.filter((img) => galleryImageIds.includes(img.id));
+const PaperClip = () => (
+  <div className="absolute -top-6 left-6 z-30 opacity-90 drop-shadow-sm -rotate-12 pointer-events-none">
+    <svg width="32" height="64" viewBox="0 0 24 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 4C8.686 4 6 6.686 6 10V34C6 38.418 9.582 42 14 42C18.418 42 22 38.418 22 34V14H18V34C18 36.209 16.209 38 14 38C11.791 38 10 36.209 10 34V10C10 8.895 10.895 8 12 8C13.105 8 14 8.895 14 10V28C14 29.105 13.105 30 12 30C10.895 30 10 29.105 10 28V14H6V28C6 31.314 8.686 34 12 34C15.314 34 18 31.314 18 28V10C18 6.686 15.314 4 12 4Z" fill="#ccd6f6" className="drop-shadow-sm" />
+    </svg>
+  </div>
+);
 
-  // cursor-based parallax for the whole strip
-  const mouseX = useMotionValue(0.5);
-  const mouseY = useMotionValue(0.5);
-  const springX = useSpring(mouseX, { stiffness: 80, damping: 20 });
-  const springY = useSpring(mouseY, { stiffness: 80, damping: 20 });
+function GalleryCard({ src, index }: { src: string; index: number }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
-  const backgroundX = useTransform(springX, [0, 1], ["-6%", "6%"]); // subtle pan
-  const backgroundY = useTransform(springY, [0, 1], ["-4%", "4%"]); // subtle pan
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
 
-  const handleMouseMove = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      const { left, top, width, height } = event.currentTarget.getBoundingClientRect();
-      const x = (event.clientX - left) / width;
-      const y = (event.clientY - top) / height;
-      mouseX.set(Math.min(Math.max(x, 0), 1));
-      mouseY.set(Math.min(Math.max(y, 0), 1));
-    },
-    [mouseX, mouseY]
-  );
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["12deg", "-12deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-12deg", "12deg"]);
 
-  const handleMouseLeave = useCallback(() => {
-    mouseX.set(0.5);
-    mouseY.set(0.5);
-  }, [mouseX, mouseY]);
+  // Stable random variations based on index
+  const baseRotation = useMemo(() => ((index * 1337) % 16) - 8, [index]);
+  const xOffset = useMemo(() => ((index * 42) % 30) - 15, [index]);
+  const yOffset = useMemo(() => ((index * 73) % 40) - 20, [index]);
+  const decorType = useMemo(() => (index % 4), [index]); // 0: Pin Red, 1: PaperClip, 2: Pin Blue, 3: None
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
-    <motion.section
-      id="gallery"
-      className="relative w-full py-16 md:py-28 lg:py-32 overflow-hidden bg-gradient-to-b from-background via-background/95 to-background"
-      variants={sectionVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8, rotate: baseRotation, x: xOffset, y: yOffset + 100 }}
+      whileInView={{ opacity: 1, scale: 1, y: yOffset }}
+      transition={{ duration: 0.8, delay: index * 0.05, ease: [0.21, 0.47, 0.32, 0.98] }}
+      viewport={{ once: true, margin: "-100px" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateY,
+        rotateX,
+        rotate: baseRotation,
+        x: xOffset,
+        y: yOffset,
+        transformStyle: "preserve-3d",
+        zIndex: 10 + index % 10 // Layer them slightly
+      }}
+      className="relative aspect-[3/4] w-full max-w-[280px] cursor-pointer group"
     >
-      {/* soft vignette background */}
-      <motion.div
-        style={{ translateX: backgroundX, translateY: backgroundY }}
-        className="pointer-events-none absolute inset-0 opacity-70"
-        aria-hidden="true"
+      <div
+        className="absolute inset-0 rounded-none bg-[#fdfdfd] p-3 pb-10 shadow-2xl transition-all duration-300 group-hover:shadow-teal-500/30 group-hover:-translate-y-2"
+        style={{
+          transform: "translateZ(30px)",
+          transformStyle: "preserve-3d",
+        }}
       >
-        <div className="absolute -inset-40 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.05),_transparent_55%),_radial-gradient(circle_at_bottom,_rgba(0,0,0,0.75),_transparent_55%)]" />
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background via-background/70 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background via-background/70 to-transparent" />
-      </motion.div>
-
-      <div className="relative z-10 container px-4 md:px-6" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2 max-w-2xl mx-auto">
-            <p className="text-xs uppercase tracking-[0.35em] text-accent/80 mb-1">Kyrat Gallery</p>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl font-headline text-primary">
-              Festival Moments
-            </h2>
-            <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Glimpses of faces, lights, and late-night chaos that make Kyrat feel alive.
-            </p>
-          </div>
-          <p className="text-[0.7rem] uppercase tracking-[0.35em] text-muted-foreground/80 flex items-center gap-2">
-            <span className="h-px w-8 bg-muted" aria-hidden="true" />
-            Click & drag or scroll sideways to explore
-            <span className="h-px w-8 bg-muted" aria-hidden="true" />
-          </p>
+        {/* Random Decorations - Moved inside 3D container with higher translateZ */}
+        <div style={{ transform: "translateZ(40px)", transformStyle: "preserve-3d" }} className="absolute inset-0 pointer-events-none z-50">
+          {decorType === 0 && <Pin color="#ef4444" />}
+          {decorType === 1 && <PaperClip />}
+          {decorType === 2 && <Pin color="#3b82f6" />}
         </div>
 
-        <div className="relative mt-10 md:mt-14">
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent" />
+        <div className="relative w-full h-full overflow-hidden border border-black/5">
+          <Image
+            src={encodeURI(src)}
+            alt="Festival Moment"
+            fill
+            className="object-cover transition-all duration-700 ease-out group-hover:scale-110 grayscale-[0.2] group-hover:grayscale-0"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        </div>
 
+        {/* Shine Effect */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-tr from-white/0 via-white/20 to-transparent" />
+      </div>
+
+      {/* Deep Shadow for table-top depth */}
+      <div className="absolute inset-0 bg-black/10 blur-xl translate-y-4 translate-x-2 -z-10 opacity-40 group-hover:opacity-60 transition-opacity" />
+    </motion.div>
+  );
+}
+
+export function Gallery() {
+  return (
+    <section id="gallery" className="relative w-full py-24 md:py-48 bg-transparent overflow-visible">
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
+        <div className="text-center mb-28 md:mb-40 space-y-4">
           <motion.div
-            className="flex gap-5 md:gap-7 lg:gap-8 overflow-x-auto pb-8 md:pb-10 snap-x snap-mandatory scroll-smooth info-parent-1 cursor-grab active:cursor-grabbing"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
           >
-            {images.map((image, index) => (
-              <motion.div
-                key={index}
-                className="snap-center first:pl-3 md:first:pl-6 last:pr-3 md:last:pr-6 flex-shrink-0"
-                variants={itemVariants}
-                whileHover={{ y: -10 }}
-              >
-                <motion.div
-                  whileHover={{ scale: 1.04, rotateX: 4, rotateY: -4 }}
-                  transition={{ type: "spring", stiffness: 200, damping: 18 }}
-                  className="group relative h-[320px] w-[240px] sm:h-[400px] sm:w-[300px] md:h-[440px] md:w-[340px] lg:h-[480px] lg:w-[360px] overflow-hidden rounded-3xl border border-border/40 bg-background/70 shadow-[0_22px_65px_rgba(0,0,0,0.65)] backdrop-blur-sm"
-                >
-                  <Image
-                    src={image.imageUrl}
-                    alt={image.description}
-                    fill
-                    sizes="(max-width: 768px) 240px, 340px"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                    data-ai-hint={image.imageHint}
-                  />
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.12),_transparent_55%)]" />
-                  <div className="absolute inset-x-4 bottom-4 flex flex-col gap-1 text-left text-xs text-muted-foreground/90">
-                    <span className="inline-flex items-center gap-2 text-[0.7rem] uppercase tracking-[0.25em] text-accent/80">
-                      <span className="h-1 w-1 rounded-full bg-accent" aria-hidden="true" />
-                      Kyrat Moment #{index + 1}
-                    </span>
-                    <p className="text-sm font-medium text-card-foreground line-clamp-2">
-                      {image.description}
-                    </p>
-                  </div>
-                </motion.div>
-              </motion.div>
-            ))}
+            <h2 className="text-7xl md:text-[10rem] font-bold font-cursive text-white tracking-normal drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+              Moments
+            </h2>
+            <div className="h-1 w-24 bg-teal-400 mx-auto mt-6 rounded-full shadow-[0_0_15px_#2dd4bf]" />
+            <p className="mt-8 text-teal-100/60 text-lg md:text-xl font-light tracking-[0.3em] uppercase">
+              The Kyrat Chronicles
+            </p>
           </motion.div>
         </div>
+
+        {/* Scattered "Tabletop" Layout */}
+        <div
+          className="flex flex-wrap justify-center items-center gap-12 sm:gap-16 md:gap-20 max-w-[1400px] mx-auto"
+          style={{ perspective: "2000px" }}
+        >
+          {MOMENT_IMAGES.map((src, i) => (
+            <GalleryCard key={`${src}-${i}`} src={src} index={i} />
+          ))}
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 }
