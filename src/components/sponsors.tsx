@@ -1,14 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { sponsors } from "@/lib/data";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Card } from "./ui/card";
+import { motion } from "framer-motion";
 
 export function Sponsors() {
-  const getImage = (imageId: string) => {
-    return PlaceHolderImages.find((img) => img.id === imageId);
-  };
-
   return (
     <section id="sponsors" className="w-full py-12 md:py-24 lg:py-32">
       <div className="container px-4 md:px-6">
@@ -23,52 +20,70 @@ export function Sponsors() {
           </div>
         </div>
 
-        <div className="mt-12 space-y-12">
-          <div>
-            <h3 className="text-center text-2xl font-semibold text-foreground/80 mb-8">Platinum Sponsors</h3>
-            <div className="flex justify-center items-center gap-8 md:gap-12 flex-wrap">
-              {sponsors.platinum.map((sponsor) => {
-                const image = getImage(sponsor.logoId);
-                return (
+        <div className="mt-12 space-y-16">
+          {/* Current Sponsors Section */}
+          {sponsors.current.length > 0 && (
+            <div>
+              <h3 className="text-center text-2xl font-semibold text-foreground/80 mb-8">
+                Sponsors
+              </h3>
+              <div className="flex justify-center items-center gap-8 md:gap-12 flex-wrap">
+                {sponsors.current.map((sponsor) => (
                   <Link href={sponsor.website} key={sponsor.id} target="_blank" rel="noopener noreferrer">
-                    {image && (
+                    <motion.div
+                      whileHover={{
+                        scale: 1.1,
+                        filter: "drop-shadow(0 0 0.75rem hsl(var(--primary) / 0.5))"
+                      }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                      className="filter grayscale hover:grayscale-0 transition-all duration-300"
+                    >
                       <Image
-                        src={image.imageUrl}
+                        src={sponsor.logoUrl}
                         alt={sponsor.name}
                         width={240}
                         height={120}
-                        className="object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
-                        data-ai-hint={image.imageHint}
+                        className="object-contain"
+                        unoptimized
                       />
-                    )}
+                    </motion.div>
                   </Link>
-                );
-              })}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
-          <div>
-            <h3 className="text-center text-2xl font-semibold text-foreground/80 mb-8">Gold Sponsors</h3>
-            <div className="flex justify-center items-center gap-8 md:gap-10 flex-wrap">
-              {sponsors.gold.map((sponsor) => {
-                const image = getImage(sponsor.logoId);
-                return (
+          {/* Past Sponsors Section */}
+          {sponsors.past.length > 0 && (
+            <div>
+              <h3 className="text-center text-2xl font-semibold text-foreground/60 mb-8">
+                Past Sponsors
+              </h3>
+              <div className="flex justify-center items-center gap-8 md:gap-10 flex-wrap">
+                {sponsors.past.map((sponsor) => (
                   <Link href={sponsor.website} key={sponsor.id} target="_blank" rel="noopener noreferrer">
-                    {image && (
+                    <motion.div
+                      whileHover={{
+                        scale: 1.05,
+                        filter: "drop-shadow(0 0 0.5rem hsl(var(--primary) / 0.3))"
+                      }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                      className="filter grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all duration-300"
+                    >
                       <Image
-                        src={image.imageUrl}
+                        src={sponsor.logoUrl}
                         alt={sponsor.name}
                         width={180}
                         height={90}
-                        className="object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
-                        data-ai-hint={image.imageHint}
+                        className="object-contain"
+                        unoptimized
                       />
-                    )}
+                    </motion.div>
                   </Link>
-                );
-              })}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

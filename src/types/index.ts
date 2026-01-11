@@ -42,14 +42,14 @@ export type Schedule = {
 export type Sponsor = {
   id: string;
   name: string;
-  logoId: string;
-  tier: 'Platinum' | 'Gold' | 'Silver';
+  logoUrl: string;
   website: string;
 };
 
-export type SponsorTier = {
-  [key: string]: Sponsor[];
-}
+export type SponsorsData = {
+  current: Sponsor[];
+  past: Sponsor[];
+};
 
 export type TeamMember = {
   id: string;

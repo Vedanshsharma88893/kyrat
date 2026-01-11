@@ -1,4 +1,4 @@
-import type { Club, Event, Schedule, SponsorTier, TeamMember, Venue } from "@/types";
+import type { Club, Event, Schedule, SponsorsData, TeamMember, Venue } from "@/types";
 
 export const clubs: Club[] = [
   { id: "club-1", name: "Groove Masters", logoId: "club-logo-1" },
@@ -145,15 +145,76 @@ export const schedule: Schedule = {
   ],
 };
 
-export const sponsors: SponsorTier = {
-  platinum: [
-    { id: "spn-001", name: "Aurora Dynamics", logoId: "sponsor-aurora", tier: "Platinum", website: "#" },
-    { id: "spn-002", name: "Solstice Corp", logoId: "sponsor-solstice", tier: "Platinum", website: "#" },
+export const sponsors: SponsorsData = {
+  current: [
+    {
+      id: "spn-001",
+      name: "OMFED",
+      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Omfed_logo.svg/1200px-Omfed_logo.svg.png",
+      website: "https://omfed.com"
+    },
   ],
-  gold: [
-    { id: "spn-003", name: "Equinox Industries", logoId: "sponsor-equinox", tier: "Gold", website: "#" },
-    { id: "spn-004", name: "Nebula Ventures", logoId: "sponsor-nebula", tier: "Gold", website: "#" },
-    { id: "spn-005", name: "Nova Solutions", logoId: "sponsor-nova", tier: "Gold", website: "#" },
+  past: [
+    {
+      id: "spn-past-001",
+      name: "State Bank of India",
+      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/SBI-logo.svg/2048px-SBI-logo.svg.png",
+      website: "https://sbi.co.in"
+    },
+    {
+      id: "spn-past-002",
+      name: "Jindal Steel and Power",
+      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Jindal_Steel_Logo.svg/1200px-Jindal_Steel_Logo.svg.png",
+      website: "https://jindalsteelpower.com"
+    },
+    {
+      id: "spn-past-003",
+      name: "Coca-Cola",
+      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Coca-Cola_logo.svg/2560px-Coca-Cola_logo.svg.png",
+      website: "https://coca-cola.com"
+    },
+    {
+      id: "spn-past-004",
+      name: "Unstop",
+      logoUrl: "https://d8it4huxumps7.cloudfront.net/uploads/images/unstop/svg/unstop-logo.svg",
+      website: "https://unstop.com"
+    },
+    {
+      id: "spn-past-005",
+      name: "KFC",
+      logoUrl: "https://upload.wikimedia.org/wikipedia/sco/thumb/b/bf/KFC_logo.svg/2048px-KFC_logo.svg.png",
+      website: "https://www.kfc.co.in"
+    },
+    {
+      id: "spn-past-006",
+      name: "Indian Oil",
+      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Indian_Oil_Logo.svg/1200px-Indian_Oil_Logo.svg.png",
+      website: "https://iocl.com"
+    },
+    {
+      id: "spn-past-007",
+      name: "NALCO",
+      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/NALCO_Logo.svg/1200px-NALCO_Logo.svg.png",
+      website: "https://nalcoindia.com"
+    },
+    {
+      id: "spn-past-008",
+      name: "IREL",
+      logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/IREL_Logo.svg/1200px-IREL_Logo.svg.png",
+      website: "https://irel.co.in"
+    },
+    {
+      id: "spn-past-009",
+      name: "Startup News",
+      logoUrl: "https://startupnews.fyi/wp-content/uploads/2023/06/StartupNews.fyi_new.svg",
+      website: "https://startupnews.fyi"
+    },
+    {
+      id: "spn-past-010",
+      name: "Shankar Bhavan",
+      logoUrl: "/images/sponsors/shankar-bhavan.png",
+      website: "#"
+    },
   ],
 };
 
