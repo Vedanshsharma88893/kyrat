@@ -1,10 +1,8 @@
-"use client";
-
 import Image from "next/image";
 import { team } from "@/lib/data";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Card, CardContent } from "../ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Card, CardContent } from "./ui/card";
 import { Twitter, Linkedin, Instagram } from "lucide-react";
 import Link from "next/link";
 import {
@@ -13,41 +11,19 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { motion } from "framer-motion";
+
 
 export function Team() {
   const getImage = (imageId: string) => {
     return PlaceHolderImages.find((img) => img.id === imageId);
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-      },
-    },
-  };
-
   return (
-    <section id="team" className="w-full py-12 md:py-24 lg:py-32 bg-transparent">
+    <section id="team" className="w-full py-12 md:py-24 lg:py-32 bg-card">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-primary">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline text-primary">
               Meet the Team
             </h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
@@ -55,21 +31,11 @@ export function Team() {
             </p>
           </div>
         </div>
-        <motion.div
-          className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-8 sm:grid-cols-2 md:gap-12 lg:max-w-none lg:grid-cols-3 mt-12"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        >
+        <div className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-8 sm:grid-cols-2 md:gap-12 lg:max-w-none lg:grid-cols-3 mt-12">
           {team.map((member) => {
             const image = getImage(member.imageId);
             return (
-              <motion.div
-                key={member.id}
-                className="flex flex-col items-center text-center gap-4"
-                variants={itemVariants}
-              >
+              <div key={member.id} className="flex flex-col items-center text-center gap-4">
                 <Avatar className="h-24 w-24 md:h-32 md:w-32 border-4 border-primary/50">
                   {image && (
                     <AvatarImage
@@ -85,12 +51,12 @@ export function Team() {
                   <p className="text-sm text-accent font-semibold">{member.title}</p>
                   <p className="text-sm text-muted-foreground max-w-xs">{member.bio}</p>
                 </div>
-                <div className="flex items-center gap-4 mt-2">
+                <div className="flex items-center gap-2 mt-2">
                   <TooltipProvider>
                     {member.social.twitter && (
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Link href={member.social.twitter} target="_blank" className="text-muted-foreground hover:text-primary h-11 w-11 inline-flex items-center justify-center">
+                          <Link href={member.social.twitter} target="_blank" className="text-muted-foreground hover:text-primary">
                             <Twitter className="h-5 w-5" />
                           </Link>
                         </TooltipTrigger>
@@ -102,7 +68,7 @@ export function Team() {
                     {member.social.linkedin && (
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Link href={member.social.linkedin} target="_blank" className="text-muted-foreground hover:text-primary h-11 w-11 inline-flex items-center justify-center">
+                          <Link href={member.social.linkedin} target="_blank" className="text-muted-foreground hover:text-primary">
                             <Linkedin className="h-5 w-5" />
                           </Link>
                         </TooltipTrigger>
@@ -114,7 +80,7 @@ export function Team() {
                     {member.social.instagram && (
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Link href={member.social.instagram} target="_blank" className="text-muted-foreground hover:text-primary h-11 w-11 inline-flex items-center justify-center">
+                          <Link href={member.social.instagram} target="_blank" className="text-muted-foreground hover:text-primary">
                             <Instagram className="h-5 w-5" />
                           </Link>
                         </TooltipTrigger>
@@ -125,10 +91,10 @@ export function Team() {
                     )}
                   </TooltipProvider>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

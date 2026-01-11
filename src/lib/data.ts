@@ -22,6 +22,7 @@ export const venues: Venue[] = [
 
 export const events: Event[] = [
   {
+    description: "Start your day with high-energy beats and a fitness rave that gets your heart pumping.",
     id: "evt-001",
     clubId: "club-1",
     name: "Sunrise Beats",
@@ -34,6 +35,7 @@ export const events: Event[] = [
     imageId: "event-music",
   },
   {
+    description: "Experience the campus transformed by light and shadow in this immersive night walk.",
     id: "evt-002",
     clubId: "club-2",
     name: "Luminous Art Walk",
@@ -46,6 +48,7 @@ export const events: Event[] = [
     imageId: "event-art",
   },
   {
+    description: "Taste the world with our international food festival featuring cuisines from over 20 countries.",
     id: "evt-003",
     clubId: "club-3",
     name: "Global Food Village",
@@ -58,6 +61,7 @@ export const events: Event[] = [
     imageId: "event-food",
   },
   {
+    description: "Immerse yourself in a night of electronic soundscapes and visual projections.",
     id: "evt-004",
     clubId: "club-1",
     name: "Electronic Dreams",
@@ -70,6 +74,7 @@ export const events: Event[] = [
     imageId: "gallery-4",
   },
   {
+    description: "Watch talented artists bring walls to life in real-time with vibrant spray paint and brushes.",
     id: "evt-005",
     clubId: "club-2",
     name: "Live Mural Painting",
@@ -82,6 +87,7 @@ export const events: Event[] = [
     imageId: "gallery-6"
   },
   {
+    description: "Sample the finest local brews and learn from the masters of the craft beer industry.",
     id: "evt-006",
     clubId: "club-3",
     name: "Craft Beer Tasting",
@@ -94,6 +100,7 @@ export const events: Event[] = [
     imageId: "event-food-2"
   },
   {
+    description: "Chill vibes and acoustic tunes as the sun goes down, perfect for unwinding.",
     id: "evt-007",
     clubId: "club-1",
     name: "Acoustic Sunset",
@@ -106,6 +113,7 @@ export const events: Event[] = [
     imageId: "gallery-5"
   },
   {
+    description: "Touch, play, and interact with large-scale kinetic installations scattered across the garden.",
     id: "evt-008",
     clubId: "club-2",
     name: "Interactive Sculpture Garden",
@@ -152,106 +160,50 @@ export const sponsors: SponsorTier = {
 export const team: TeamMember[] = [
   {
     id: "tm-001",
-    name: "Vrinda Gupta",
-    title: "Decoration & Events Lead",
-    bio: "",
-    imageId: "team-vrinda",
-    social: {}
+    name: "Alex Rivera",
+    title: "Festival Director",
+    bio: "Visionary leader passionate about creating unforgettable experiences.",
+    imageId: "team-1",
+    social: { twitter: "#", linkedin: "#" }
   },
   {
     id: "tm-002",
-    name: "Anwesa Nayak",
-    title: "Organizer",
-    bio: "",
-    imageId: "team-anwesa",
-    social: {}
+    name: "Samira Khan",
+    title: "Artistic Director",
+    bio: "Curator of the festival's vibrant and diverse artistic lineup.",
+    imageId: "team-2",
+    social: { instagram: "#", linkedin: "#" }
   },
   {
     id: "tm-003",
-    name: "Ankrith",
-    title: "Core Members & Talent Hunt Lead",
-    bio: "",
-    imageId: "team-ankrith",
-    social: {}
+    name: "Leo Chen",
+    title: "Operations Manager",
+    bio: "The organizational mastermind ensuring everything runs smoothly.",
+    imageId: "team-3",
+    social: { twitter: "#", linkedin: "#" }
   },
   {
     id: "tm-004",
-    name: "Tanishq Chouhan",
-    title: "Production",
-    bio: "",
-    imageId: "team-tanishq",
-    social: {}
+    name: "Maya Singh",
+    title: "Sponsorship Coordinator",
+    bio: "Building strong partnerships to bring the festival to life.",
+    imageId: "team-4",
+    social: { linkedin: "#" }
   },
   {
     id: "tm-005",
-    name: "Chiranjeeb Sethi",
-    title: "Events Team",
-    bio: "",
-    imageId: "team-chiranjeeb",
-    social: {}
+    name: "Ben Carter",
+    title: "Volunteer Captain",
+    bio: "Leading our amazing team of dedicated festival volunteers.",
+    imageId: "team-5",
+    social: { instagram: "#" }
   },
   {
     id: "tm-006",
-    name: "Tushar Agarwalla",
-    title: "Events Team",
-    bio: "",
-    imageId: "team-tushar",
-    social: {}
-  },
-  {
-    id: "tm-007",
-    name: "Bhoomi Nayyar",
-    title: "Core Member",
-    bio: "",
-    imageId: "team-bhoomi",
-    social: {}
-  },
-  {
-    id: "tm-008",
-    name: "Surbhi Kumari",
-    title: "Core Member",
-    bio: "",
-    imageId: "team-surbhi",
-    social: {}
-  },
-  {
-    id: "tm-009",
-    name: "Sourajit Madeli",
-    title: "Core Member",
-    bio: "",
-    imageId: "team-sourajit",
-    social: {}
-  },
-  {
-    id: "tm-010",
-    name: "Rudra Narayan",
-    title: "Core Member",
-    bio: "",
-    imageId: "team-rudra",
-    social: {}
-  },
-  {
-    id: "tm-011",
-    name: "Nayanshi",
-    title: "Core Member",
-    bio: "",
-    imageId: "team-nayanshi",
-    social: {}
-  },
-  {
-    id: "tm-012",
-    name: "Aniket Pramanik",
-    title: "Core Member",
-    bio: "",
-    imageId: "team-aniket",
-    social: {}
-  },
-  {
-    id: "tm-013",
-    name: "Arjun V Nair",
-    title: "Core Member",
-    bio: "",
-    imageId: "team-arjun",
-    social: {}
+    name: "Olivia Reed",
+    title: "Marketing Lead",
+    bio: "Spreading the word and sharing the magic of the festival.",
+    imageId: "team-6",
+    social: { twitter: "#", instagram: "#" }
   },
 ];

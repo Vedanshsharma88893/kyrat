@@ -121,82 +121,40 @@
       "imageHint": "chef hat"
     },
     {
-      "id": "team-vrinda",
-      "description": "Profile picture of Vrinda Gupta - Decoration & Events Lead",
-      "imageUrl": "https://lh3.googleusercontent.com/d/1wQSVsEj-WQ8ayBkScNi_3YA_r5fsgqj9",
-      "imageHint": "team member portrait"
+      "id": "team-1",
+      "description": "Profile picture of a team member.",
+      "imageUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjMxNDEzMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
     },
     {
-      "id": "team-anwesa",
-      "description": "Profile picture of Anwesa Nayak - Organizer",
-      "imageUrl": "https://lh3.googleusercontent.com/d/1g3bVlxDojfktgDX2im1wSv4dqfRDoojh",
-      "imageHint": "team member portrait"
+      "id": "team-2",
+      "description": "Profile picture of a team member.",
+      "imageUrl": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjMxNDEzMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
     },
     {
-      "id": "team-ankrith",
-      "description": "Profile picture of Ankrith - Core Members & Talent Hunt Lead",
-      "imageUrl": "https://lh3.googleusercontent.com/d/1ns5u2prcMcAkHYpJLjv_lmv0f1wzQ3Sy",
-      "imageHint": "team member portrait"
+      "id": "team-3",
+      "description": "Profile picture of a team member.",
+      "imageUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjMxNDEzMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
     },
     {
-      "id": "team-tanishq",
-      "description": "Profile picture of Tanishq Chouhan - Production",
-      "imageUrl": "https://lh3.googleusercontent.com/d/1m2KpA-p2bfs47y4xEB3AMRrl1HdMWM0v",
-      "imageHint": "team member portrait"
+      "id": "team-4",
+      "description": "Profile picture of a team member.",
+      "imageUrl": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjMxNDEzMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
     },
     {
-      "id": "team-chiranjeeb",
-      "description": "Profile picture of Chiranjeeb Sethi - Events Team",
-      "imageUrl": "https://lh3.googleusercontent.com/d/1us7aO64UsUIHZignGIhw_SJ9ZAH-rg_h",
-      "imageHint": "team member portrait"
+      "id": "team-5",
+      "description": "Profile picture of a team member.",
+      "imageUrl": "https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjMxNDEzMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
     },
     {
-      "id": "team-tushar",
-      "description": "Profile picture of Tushar Agarwalla - Events Team",
-      "imageUrl": "https://lh3.googleusercontent.com/d/1WG8_Dd1rXTy9xP-7EzorHPG42Bl1q-__",
-      "imageHint": "team member portrait"
-    },
-    {
-      "id": "team-bhoomi",
-      "description": "Profile picture of Bhoomi Nayyar - Core Member",
-      "imageUrl": "https://lh3.googleusercontent.com/d/1-6Vwdx8fClLwwYbBniCqYeaN8TV259IA",
-      "imageHint": "team member portrait"
-    },
-    {
-      "id": "team-surbhi",
-      "description": "Profile picture of Surbhi Kumari - Core Member",
-      "imageUrl": "https://lh3.googleusercontent.com/d/1Z5mVcPq-cpxCwnSHQjFu5jpW5fxr4z2A",
-      "imageHint": "team member portrait"
-    },
-    {
-      "id": "team-sourajit",
-      "description": "Profile picture of Sourajit Madeli - Core Member",
-      "imageUrl": "https://lh3.googleusercontent.com/d/1nsxCjovwpjLXZ9eD6fyj1AvKbVeYXLaQ",
-      "imageHint": "team member portrait"
-    },
-    {
-      "id": "team-rudra",
-      "description": "Profile picture of Rudra Narayan - Core Member",
-      "imageUrl": "https://lh3.googleusercontent.com/d/1oV57yjvxCo_Puzk5VezlacPUFhmXIW8i",
-      "imageHint": "team member portrait"
-    },
-    {
-      "id": "team-nayanshi",
-      "description": "Profile picture of Nayanshi - Core Member",
-      "imageUrl": "https://lh3.googleusercontent.com/d/1fcGCpi99SUJrrtb-Fk0slkDYuVOTIwNp",
-      "imageHint": "team member portrait"
-    },
-    {
-      "id": "team-aniket",
-      "description": "Profile picture of Aniket Pramanik - Core Member",
-      "imageUrl": "https://lh3.googleusercontent.com/d/1YkO_C4_wIg4WfmiiB-YnGKVCCMonoEq4",
-      "imageHint": "team member portrait"
-    },
-    {
-      "id": "team-arjun",
-      "description": "Profile picture of Arjun V Nair - Core Member",
-      "imageUrl": "https://lh3.googleusercontent.com/d/1JN9-tBSnVt79erc41-3WZwN8hC2OqRAA",
-      "imageHint": "team member portrait"
+      "id": "team-6",
+      "description": "Profile picture of a team member.",
+      "imageUrl": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjMxNDEzMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
     }
   ]
 }

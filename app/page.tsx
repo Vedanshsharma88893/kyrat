@@ -147,36 +147,12 @@ export default function Home() {
               </FocusScroll>
             </Suspense>
 
-            {/* Creative Gateway to Campus Map */}
-            <div className="relative w-full h-[100vh] z-40 my-24 border-y border-white/10 pointer-events-none">
-              <div className="sticky top-0 h-full w-full flex items-center justify-start overflow-hidden">
 
-                {/* Background Image Container */}
-                <div
-                  className="absolute left-[40px] bottom-10 z-10 -translate-x-1/2"
-                  style={{ width: 'min(50vw, 400px)', height: 'min(50vw, 400px)' }}
-                >
-                  <Image
-                    src="/images/assets/airplane.png"
-                    alt="Airplane"
-                    fill
-                    className="object-contain object-center"
-                    priority
-                  />
-                </div>
 
-                {/* Gateway Link */}
-                <CreativeGateway
-                  href="/campus-map"
-                  label="Campus Map"
-                  variant="glitch"
-                  className="left-[40%] md:left-[30%] z-50 pointer-events-auto"
-                />
-              </div>
+
+            <div id="festival-moments">
+              <FestivalMoments onImageClick={handleImageClick} />
             </div>
-
-
-            <FestivalMoments onImageClick={handleImageClick} />
 
             <Suspense fallback={<Skeleton className="h-96 w-full" />}>
               <FocusScroll id="sponsors">

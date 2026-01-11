@@ -8,7 +8,7 @@ export type Club = {
 };
 
 export type Event = {
-  description?: ReactNode;
+  description: ReactNode;
   id: string;
   clubId: string;
   name: string;
